@@ -106,24 +106,26 @@
               </div>
               <div class="questionmap">
                 <p>Jump To Question.....</p>
+               <div class="btn-toolbar" role="toolbar" >
                   <div class="btn-group d-flex" v-for="(n, index) in questions.length"
                   :key='index'>
-                      <a 
+                      <button
                         v-if="answers[index] == undefined " class="btn btn-sm btn-outline-info mx-1 my-1 w-100"
                         @click="jumpQuestion(index)" 
                         >{{n}}
-                      </a>
-                      <a 
+                      </button>
+                      <button
                         v-else-if="answers[index] == ''" class="btn btn-sm btn-outline-info mx-1 my-1 w-100" 
                         @click="jumpQuestion(index)" 
                         >{{n}}
-                      </a>
-                       <a 
+                      </button>
+                       <button
                         v-else class="btn btn-sm btn-info mx-1 my-1 w-100" 
                         @click="jumpQuestion(index)" 
                         >{{n}}
-                      </a>
+                      </button>
                   </div>
+                </div>
               </div>
           </div>
         </div>
