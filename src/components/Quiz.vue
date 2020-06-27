@@ -106,7 +106,6 @@
               </div>
               <div class="questionmap">
                 <p>Jump To Question.....</p>
-                <div class="btn-toolbar" role="toolbar" style="margin: 0;">
                   <div class="btn-group d-flex" v-for="(n, index) in questions.length"
                   :key='index'>
                       <a 
@@ -125,7 +124,6 @@
                         >{{n}}
                       </a>
                   </div>
-                </div>
               </div>
           </div>
         </div>
@@ -332,6 +330,5 @@ export default {
   border-width: 1px;
   border-color: black;
   margin-top: 20px;
-  padding: 20px 50px 0px 50px;
 }
 </style>
