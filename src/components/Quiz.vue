@@ -110,17 +110,17 @@
                   <div class="btn-group d-flex" v-for="(n, index) in questions.length"
                   :key='index'>
                       <a 
-                        v-if="answers[index] == undefined " class="btn btn-sm btn-outline-info w-100"
+                        v-if="answers[index] == undefined " class="btn btn-sm btn-outline-info mx-1 my-1 w-100"
                         @click="jumpQuestion(index)" 
                         >{{n}}
                       </a>
                       <a 
-                        v-else-if="answers[index] == ''" class="btn btn-sm btn-outline-info w-100" 
+                        v-else-if="answers[index] == ''" class="btn btn-sm btn-outline-info mx-1 my-1 w-100" 
                         @click="jumpQuestion(index)" 
                         >{{n}}
                       </a>
                        <a 
-                        v-else class="btn btn-sm btn-info w-100" 
+                        v-else class="btn btn-sm btn-info mx-1 my-1 w-100" 
                         @click="jumpQuestion(index)" 
                         >{{n}}
                       </a>
