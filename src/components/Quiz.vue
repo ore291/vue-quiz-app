@@ -29,6 +29,9 @@
         <div class="spinner-border" role="status" v-if="loading">
           <span class="sr-only">Loading...</span>
         </div>
+        <div v-if='error'>
+          <p> we are having issues getting the questions, try again later</p>
+        </div>
       </div>
     </div>
     <div class="container mt-5" style="text-align:center" v-if="introStage">
@@ -157,6 +160,7 @@ export default {
       title: '',
       currentQuestion: 0,
       loading: false,
+      error: false,
       answers:[],
       correct: 0,
       perc: null,
@@ -235,7 +239,12 @@ export default {
                           this.title = response.data.subject;
                           this.loading =false
                           this.introStage = true;
-                          this.subjectStage = false;});
+                          this.subjectStage = false;})
+        .catch(err => {
+          if (err.response) {
+            this.loading = false;
+            This error = true;
+        });
     },
     startQuiz(){
       this.questionStage = true;
