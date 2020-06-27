@@ -243,7 +243,7 @@ export default {
         .catch(err => {
           if (err.response) {
             this.loading = false;
-            This error = true;
+            this.error = true;
         });
     },
     startQuiz(){
