@@ -107,7 +107,7 @@
               <div class="questionmap">
                 <p>Jump To Question.....</p>
                 <div class="btn-toolbar" role="toolbar" style="margin: 0;">
-                  <div class="btn-group" v-for="(n, index) in questions.length"
+                  <div class="btn-group-justified" v-for="(n, index) in questions.length"
                   :key='index'>
                       <a 
                         v-if="answers[index] == undefined " class="btn btn-sm btn-outline-info mx-1 my-2"
