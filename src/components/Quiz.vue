@@ -241,10 +241,10 @@ export default {
                           this.introStage = true;
                           this.subjectStage = false;})
         .catch(err => {
-          if (err.response) {
-            this.loading = false;
-            this.error = true;
-        });
+          this.loading = false;
+          this.error = true;
+          console.log(err);
+         })
     },
     startQuiz(){
       this.questionStage = true;
