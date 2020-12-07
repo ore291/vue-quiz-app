@@ -1,135 +1,17 @@
 <template>
-  <div class="container flex justify-content-center" id="quiz">
+  <div  id="quiz">
+    <!-- subject stage -->
     <div class="subjectstage" v-if="subjectStage">
-      <div class="form-group col-md-3"  >
-        <label for="FormControlSelect1">Select Exam</label>
-        <select class="form-control"
-         id="FormControlSelect1"
-         v-model="subject"
-         >
-           <option v-for="(subjectname, subjectcode) in subjects[0]" 
-           :key='subjectname' 
-           :value="subjectname" 
-           >{{subjectcode}}</option>
-        </select>
-        <label for="FormControlSelect2">Select Year</label>
-        <select class="form-control"
-         id="FormControlSelect2"
-            v-model="year"
-         >
-           <option v-for="year in subjects[1]" 
-           :key='year' 
-           :value="year" 
-           >{{year}}</option>
-        </select>
-        <button class="btn btn-lg btn-success mt-5"
-          @click="getAll">Start Exam</button>
-      </div>
-      <div class="d-flex justify-content-center">
-        <div class="spinner-border" role="status" v-if="loading">
-          <span class="sr-only">Loading...</span>
-        </div>
-        <div v-if='error'>
-          <p> we are having issues getting the questions, try again later</p>
-        </div>
-      </div>
+      <SubjectStage @setSubjects='setStage' :subjects='subjects'/>
     </div>
+    <!-- end of subject stage -->
+    <!-- intro stage -->
     <div class="container mt-5" style="text-align:center" v-if="introStage">
-      <h1 mt-5>Examination: {{this.title}}</h1>
-      <h4 mb-2> You have 30mins to answer all questions.</h4>
-      <button class=" btn btn-lg btn-success"
-       @click="startQuiz"
-       >START</button>
+      <introStage :title='title' @startQuiz='startQuiz' />
     </div>
+    <!-- end of intro stage -->
     <div v-else-if="questionStage">
-      <circular-count-down-timer
-        :initial-value="1800"
-        :stroke-width="5"
-        :seconds-stroke-color="'#f00'"
-        :minutes-stroke-color="'#0ff'"
-        :underneath-stroke-color="'lightgrey'"
-        :seconds-fill-color="'#00ffff66'"
-        :minutes-fill-color="'#00ff0066'"
-        :size="80"
-        :padding="6"
-        :minute-label="'minutes'"
-        :second-label="'seconds'"
-        :show-second="true"
-        :show-minute="true"
-        :show-hour="false"
-        style="text-align:center"
-        @finish="submitExam"
-      ></circular-count-down-timer>
-      <div style="text-align:right"> 
-        <button class="btn btn-lg btn-danger" 
-          @click="submitExam"
-          >Submit All</button>
-      </div>
-      <span > Question {{currentQuestion+1}} of {{questions.length}}</span>
-      <br/>
-      <div class="container"
-        v-for="(question, index) in questions" 
-        v-bind:key="index">
-        <div v-show="index == currentQuestion">
-          <div class="questionbody"><span v-html="question.section" style="color:red"></span><br><p v-html="question.question"></p></div>
-          <ol type="A">
-            <li v-for="(option, key) in question.option" v-bind:key="option">
-              <label class="form-check-label" >
-                <div class="form-check">
-                  <input class="form-check-input" id="exampleRadios1" type="radio" v-model="userResponse" 
-                  :name="index"  
-                  :value="key" 
-                  >{{option}}
-                </div>
-              </label>
-            </li>
-          </ol>
-          <div class="quiz-footer">
-            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                <div>
-                  <button v-show="currentQuestion > 0"
-                    class="btn btn-md btn-outline-danger " 
-                    @click="prevQuestion">Prev</button>
-                </div>
-                <div>
-                  <button v-show="currentQuestion < (questions.length - 1)"
-                    class="btn btn-md btn-success ml-4" 
-                    @click="next"
-                    >Next</button>
-                </div>
-                <div>
-                  <button v-show="currentQuestion == (questions.length - 1)"
-                    class="btn btn-md btn-info ml-4" 
-                    @click="submitExam"
-                    >Submit</button>
-                </div>
-              </div>
-              <div class="questionmap">
-                <p>Jump To Question.....</p>
-               <div class="btn-toolbar" role="toolbar" >
-                  <div class="btn-group d-flex" v-for="(n, index) in questions.length"
-                  :key='index'>
-                      <button
-                        v-if="answers[index] == undefined " class="btn btn-sm btn-outline-info mx-1 my-1 w-100"
-                        @click="jumpQuestion(index)" 
-                        >{{n}}
-                      </button>
-                      <button
-                        v-else-if="answers[index] == ''" class="btn btn-sm btn-outline-info mx-1 my-1 w-100" 
-                        @click="jumpQuestion(index)" 
-                        >{{n}}
-                      </button>
-                       <button
-                        v-else class="btn btn-sm btn-info mx-1 my-1 w-100" 
-                        @click="jumpQuestion(index)" 
-                        >{{n}}
-                      </button>
-                  </div>
-                </div>
-              </div>
-          </div>
-        </div>
-      </div>
+      <Questions @submitExam='submitExam' :questions='questions' :title='title'/>
     </div>
     <div class="resultsstage" v-if="resultsStage">
       <h1>
@@ -143,10 +25,18 @@
 </template>
 
 <script>
-import axios from 'axios';
+
+import SubjectStage from './Subject'
+import introStage from './Intro'
+import Questions from './Questions'
 
 export default {
   name: 'Quiz',
+  components: {
+    SubjectStage,
+    introStage,
+    Questions
+  },
   props: {
     
   },
@@ -159,8 +49,7 @@ export default {
       questions: null,
       title: '',
       currentQuestion: 0,
-      loading: false,
-      error: false,
+      
       answers:[],
       correct: 0,
       perc: null,
@@ -200,8 +89,6 @@ export default {
         }
       ],
       userResponse: '',
-      year: '2010',
-      subject: null,
       subjects: [
         {
         'English language' : 'english',
@@ -231,68 +118,65 @@ export default {
   },
     
   methods: {
-    getAll(){
-     var url = "https://questions.aloc.ng/api/q/40?subject=" + this.subject + "&year=" + this.year + "&type=utme";
-     this.loading = true;
-     axios.get(url)
-      .then((response) => {this.questions = response.data.data;
-                          this.title = response.data.subject;
-                          this.loading =false
-                          this.introStage = true;
-                          this.subjectStage = false;})
-        .catch(err => {
-          this.loading = false;
-          this.error = true;
-          console.log(err);
-         })
-    },
     startQuiz(){
       this.questionStage = true;
       this.introStage = false;
     },
-    next(){
-      this.$set(this.answers, this.currentQuestion, this.userResponse);
-      this.currentQuestion++;
-      if(this.userResponse != ""){
-        this.userResponse = this.answers[this.currentQuestion]
-      }
-      else{
-       this.userResponse='';
-      }
-    },
-    prevQuestion(){
-      this.$set(this.answers, this.currentQuestion, this.userResponse);
-      this.currentQuestion--;
-      if(this.userResponse != ""){
-        this.userResponse = this.answers[this.currentQuestion];
-      }
-      else{
-       this.userResponse='';
-      }
-    },
-    submitExam(){
-      this.$set(this.answers, this.currentQuestion, this.userResponse);
-      this.handleResults();
+    submitExam(correct){
+      this.correct = correct;
+      this.perc = ((this.correct / this.questions.length) * 100).toFixed(2);
       this.questionStage = false; 
       this.resultsStage = true; 
     },
-    handleResults(){
-      this.questions.forEach((a, index) => {
-        if(this.answers[index] === a.answer) this.correct++;
-      });
-      this.perc = ((this.correct / this.questions.length) * 100).toFixed(2);
+    // next(){
+    //   this.$set(this.answers, this.currentQuestion, this.userResponse);
+    //   this.currentQuestion++;
+    //   if(this.userResponse != ""){
+    //     this.userResponse = this.answers[this.currentQuestion]
+    //   }
+    //   else{
+    //    this.userResponse='';
+    //   }
+    // },
+    // prevQuestion(){
+    //   this.$set(this.answers, this.currentQuestion, this.userResponse);
+    //   this.currentQuestion--;
+    //   if(this.userResponse != ""){
+    //     this.userResponse = this.answers[this.currentQuestion];
+    //   }
+    //   else{
+    //    this.userResponse='';
+    //   }
+    // },
+    // submitExam(){
+    //   this.$set(this.answers, this.currentQuestion, this.userResponse);
+    //   this.handleResults();
+    //   this.questionStage = false; 
+    //   this.resultsStage = true; 
+    // },
+    // handleResults(){
+    //   this.questions.forEach((a, index) => {
+    //     if(this.answers[index] === a.answer) this.correct++;
+    //   });
+    //   this.perc = ((this.correct / this.questions.length) * 100).toFixed(2);
 
-    },
-    jumpQuestion(index){
-      this.$set(this.answers, this.currentQuestion, this.userResponse);
-      this.currentQuestion = index;
-    },
+    // },
+    // jumpQuestion(index){
+    //   this.$set(this.answers, this.currentQuestion, this.userResponse);
+    //   this.currentQuestion = index;
+    // },
     restart(){
         Object.assign(this.$data, this.$options.data());
         this.subjectStage = true;
         // this.introStage = true;
         this.resultsStage = false;
     },
+    setStage(response) {
+          this.questions = response.response.data.data;
+          this.title = response.response.data.subject;
+          this.introStage = true;
+          this.subjectStage = false;
+        }
   }
 }
 </script>
