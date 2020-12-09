@@ -1,10 +1,11 @@
 <template>
-<div>
-    <div class="form-group col-md-3"  >
+<div class="container col-sm-6 mt-5 p-5 bg">
+    <div class="form-group"  >
         <label for="FormControlSelect1">Select Exam</label>
-        <select class="form-control"
+        <select class="form-control form-control-sm"
          id="FormControlSelect1"
          v-model="subject"
+         placeholder="select subject...."
          >
            <option v-for="(subjectname, subjectcode) in subjects[0]" 
            :key='subjectname' 
@@ -12,7 +13,7 @@
            >{{subjectcode}}</option>
         </select>
         <label for="FormControlSelect2">Select Year</label>
-        <select class="form-control"
+        <select class="form-control form-control-sm"
          id="FormControlSelect2"
             v-model="year"
          >
@@ -22,7 +23,8 @@
            >{{year}}</option>
         </select>
         <button class="btn btn-lg btn-success mt-5"
-          @click="getAll">Start Exam</button>
+          @click="getAll">Get Questions</button>
+          
       </div>
       <div class="d-flex justify-content-center">
         <div class="spinner-border" role="status" v-if="loading">
@@ -76,5 +78,16 @@ export default {
 </script>
 
 <style>
+.bg{
+  /* The image used */
+  background-image: url("https://image.freepik.com/free-vector/student-with-laptop-studying-online-course_74855-5293.jpg");
 
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 </style>

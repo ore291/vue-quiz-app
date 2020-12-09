@@ -13,13 +13,13 @@
     <div v-else-if="questionStage">
       <Questions @submitExam='submitExam' :questions='questions' :title='title'/>
     </div>
-    <div class="resultsstage" v-if="resultsStage">
-      <h1>
-        <center>{{this.title}}</center>
-      </h1>
-       <h2><strong>Score: {{correct}}/{{questions.length}}</strong></h2>
-       <h3>You got {{perc}}% correct, Do you want to restart? </h3>
-      <button class="btn btn-lg btn-info" @click="restart">Restart</button>
+    <div class="resultsstage mt-5" style="text-align:center" v-if="resultsStage">
+      <h2>
+        Congratulations on finishing the Quiz
+      </h2>
+       <h3 class="lead"><strong>Score: {{correct}}/{{questions.length}}</strong></h3>
+       <h5 style="color:green">You got {{perc}}% correct, Do you want to restart? </h5>
+      <button class="btn btn-lg btn-info mt-3" @click="restart">Restart</button>
     </div>
   </div> 
 </template>
@@ -183,38 +183,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.questionbody{
-  text-align: justify;
-  color: green;
-  border-style: solid;
-  border-width: 1px;
-  border-color: black;
-  border-radius: 50px;
-  padding: 30px 50px 30px 50px;
-  margin-top: 10px;
-}
-.subjectstage{
- padding: 50px 50px 50px ;
- margin-top: 50px;
- background-color: rgb(192, 199, 223);
-}
-.subjectstage label {
-  text-align: center;
-  text-transform: uppercase;
-  color: rgb(255, 0, 0);
-  font-size: 25px;
-}
-
-.resultsstage{
- padding: 50px 50px 50px ;
- margin-top: 50px;
- background-color: rgb(192, 199, 223);
-}
-
-.questionmap {
-  border-style: dotted;
-  border-width: 1px;
-  border-color: black;
-  margin-top: 20px;
+#quiz{
+  height: 100%;
 }
 </style>

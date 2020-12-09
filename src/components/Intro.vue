@@ -1,10 +1,11 @@
 <template>
   <div>
-      <h1 mt-5>Examination: {{this.title}}</h1>
-      <h4 mb-2> You have 30mins to answer all questions.</h4>
+      <h1 mt-5>{{this.title.toUpperCase()}}</h1>
+      <h4 mb-5> You have 30mins to answer all questions.</h4>
+      
       <button class=" btn btn-lg btn-success"
        @click="startQuiz"
-       >START</button>
+       >START QUIZ</button>
   </div>
 </template>
 
