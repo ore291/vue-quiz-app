@@ -1,6 +1,6 @@
 <template>
-    <nav class="navbar navbar-dark bg-dark">
-    <span class="navbar-brand mb-3 ml-5 h1">UTME-QUIZ</span>
+    <nav class="navbar sticky-top navbar-dark bg-dark" >
+    <span class="navbar-brand mb-0 h1">UTME Quiz</span>
     </nav>
 </template>
 <script>
